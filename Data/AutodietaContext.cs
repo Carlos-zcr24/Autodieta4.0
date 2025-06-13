@@ -60,7 +60,7 @@ namespace AutodietaSemanal.Data
                 
                 // Comidas
                 new Receta { Id = 4, Nombre = "Ensalada César", Descripcion = "Ensalada fresca con pollo", Ingredientes = "Lechuga, pollo, croutones, queso parmesano, aderezo césar", TipoComida = TipoComida.Comida },
-                new Receta { Id = 5, Nombre = "Pasta con Verduras", Descripción = "Pasta integral con verduras al vapor", Ingredientes = "Pasta integral, brócoli, zanahoria, calabacín, aceite de oliva", TipoComida = TipoComida.Comida },
+                new Receta { Id = 5, Nombre = "Pasta con Verduras", Descripcion = "Pasta integral con verduras al vapor", Ingredientes = "Pasta integral, brócoli, zanahoria, calabacín, aceite de oliva", TipoComida = TipoComida.Comida },mida },
                 new Receta { Id = 6, Nombre = "Pollo a la Plancha", Descripcion = "Pechuga de pollo con ensalada", Ingredientes = "Pechuga de pollo, lechuga, tomate, pepino, aceite de oliva", TipoComida = TipoComida.Comida },
                 new Receta { Id = 7, Nombre = "Pizza Libre", Descripcion = "Pizza de fin de semana", Ingredientes = "Masa de pizza, queso, jamón, champiñones", TipoComida = TipoComida.Comida, EsComidaLibre = true },
                 
