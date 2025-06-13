@@ -1,0 +1,58 @@
+
+@model AutodietaSemanal.Models.Receta
+
+@{
+    ViewData["Title"] = "Detalle de Receta";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">@Model.Nombre</h2>
+                    @if (Model.EsComidaLibre)
+                    {
+                        <span class="badge bg-warning">Comida Libre</span>
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5 class="text-muted">Tipo de Comida</h5>
+                            <p class="mb-3">
+                                @switch (Model.TipoComida)
+                                {
+                                    case AutodietaSemanal.Models.TipoComida.Desayuno:
+                                        <span class="badge bg-info">🌅 Desayuno</span>
+                                        break;
+                                    case AutodietaSemanal.Models.TipoComida.Comida:
+                                        <span class="badge bg-success">🍽️ Comida</span>
+                                        break;
+                                    case AutodietaSemanal.Models.TipoComida.Cena:
+                                        <span class="badge bg-dark">🌙 Cena</span>
+                                        break;
+                                }
+                            </p>
+                            
+                            <h5 class="text-muted">Descripción</h5>
+                            <p class="mb-3">@Model.Descripcion</p>
+                            
+                            <h5 class="text-muted">Ingredientes</h5>
+                            <div class="bg-light p-3 rounded">
+                                <p class="mb-0">@Model.Ingredientes</p>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <a href="@Url.Action("Index", "Usuario")" class="btn btn-primary">
+                                    ← Volver a Mi Dieta
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

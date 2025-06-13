@@ -17,3 +17,15 @@ channel = "stable-24_05"
 [deployment]
 run = ["dotnet", "run"]
 deploymentTarget = "cloudrun"
+
+[workflows]
+runButton = "Run Autodieta"
+
+[[workflows.workflow]]
+name = "Run Autodieta"
+author = 43817031
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "dotnet run"

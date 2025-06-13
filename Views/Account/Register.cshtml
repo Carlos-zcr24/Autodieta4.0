@@ -1,0 +1,61 @@
+
+@model AutodietaSemanal.Models.RegistroViewModel
+
+@{
+    ViewData["Title"] = "Registro";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>🥗 Autodieta Semanal</h3>
+                    <p class="mb-0">Crear Cuenta Nueva</p>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="NombreUsuario" class="form-label"></label>
+                            <input asp-for="NombreUsuario" class="form-control" />
+                            <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Contraseña" class="form-label"></label>
+                            <input asp-for="Contraseña" class="form-control" type="password" />
+                            <span asp-validation-for="Contraseña" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="ConfirmarContraseña" class="form-label"></label>
+                            <input asp-for="ConfirmarContraseña" class="form-control" type="password" />
+                            <span asp-validation-for="ConfirmarContraseña" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <p>¿Ya tienes cuenta? <a href="@Url.Action("Login", "Account")">Inicia sesión aquí</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

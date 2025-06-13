@@ -1,0 +1,114 @@
+
+@model AutodietaSemanal.Models.DietaSemanal
+
+@{
+    ViewData["Title"] = "Mi Dieta Semanal";
+    Layout = "_Layout";
+    var usuario = ViewBag.Usuario as AutodietaSemanal.Models.Usuario;
+    var fechaVencimiento = (DateTime)ViewBag.FechaVencimiento;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">🥗 Mi Dieta Semanal</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Usuario:</strong> @usuario?.NombreUsuario</p>
+                            <p><strong>Email:</strong> @usuario?.Email</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Fecha de Vencimiento:</strong> @fechaVencimiento.ToString("dd/MM/yyyy")</p>
+                            @if (Model != null)
+                            {
+                                <p><strong>Dieta del:</strong> @Model.FechaInicio.ToString("dd/MM/yyyy") al @Model.FechaFin.ToString("dd/MM/yyyy")</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model?.DietasDiarias?.Any() == true)
+    {
+        <div class="row">
+            @foreach (var dietaDiaria in Model.DietasDiarias.OrderBy(d => d.Fecha))
+            {
+                <div class="col-lg-6 col-xl-4 mb-4">
+                    <div class="diet-day">
+                        <div class="day-header">
+                            @GetDayName(dietaDiaria.Fecha.DayOfWeek) - @dietaDiaria.Fecha.ToString("dd/MM")
+                        </div>
+                        
+                        <div class="meal-section">
+                            <h6 class="text-muted mb-2">🌅 Desayuno</h6>
+                            @if (dietaDiaria.RecetaDesayuno != null)
+                            {
+                                <div class="meal-item" onclick="location.href='@Url.Action("Receta", "Usuario", new { id = dietaDiaria.RecetaDesayuno.Id })'">
+                                    @dietaDiaria.RecetaDesayuno.Nombre
+                                </div>
+                            }
+                        </div>
+                        
+                        <div class="meal-section">
+                            <h6 class="text-muted mb-2">🍽️ Comida</h6>
+                            @if (dietaDiaria.RecetaComida != null)
+                            {
+                                <div class="meal-item @(dietaDiaria.RecetaComida.EsComidaLibre ? "bg-warning" : "")" onclick="location.href='@Url.Action("Receta", "Usuario", new { id = dietaDiaria.RecetaComida.Id })'">
+                                    @dietaDiaria.RecetaComida.Nombre
+                                    @if (dietaDiaria.RecetaComida.EsComidaLibre)
+                                    {
+                                        <span class="badge bg-warning">Libre</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        
+                        <div class="meal-section">
+                            <h6 class="text-muted mb-2">🌙 Cena</h6>
+                            @if (dietaDiaria.RecetaCena != null)
+                            {
+                                <div class="meal-item @(dietaDiaria.RecetaCena.EsComidaLibre ? "bg-warning" : "")" onclick="location.href='@Url.Action("Receta", "Usuario", new { id = dietaDiaria.RecetaCena.Id })'">
+                                    @dietaDiaria.RecetaCena.Nombre
+                                    @if (dietaDiaria.RecetaCena.EsComidaLibre)
+                                    {
+                                        <span class="badge bg-warning">Libre</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <h4>No tienes una dieta activa</h4>
+            <p>Por favor, contacta al administrador para que genere una nueva dieta.</p>
+        </div>
+    }
+</div>
+
+@functions {
+    private string GetDayName(DayOfWeek dayOfWeek)
+    {
+        return dayOfWeek switch
+        {
+            DayOfWeek.Monday => "Lunes",
+            DayOfWeek.Tuesday => "Martes",
+            DayOfWeek.Wednesday => "Miércoles",
+            DayOfWeek.Thursday => "Jueves",
+            DayOfWeek.Friday => "Viernes",
+            DayOfWeek.Saturday => "Sábado",
+            DayOfWeek.Sunday => "Domingo",
+            _ => "Desconocido"
+        };
+    }
+}

@@ -1,0 +1,82 @@
+
+@model AutodietaSemanal.Models.Usuario
+
+@{
+    ViewData["Title"] = "Añadir Usuario";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">➕ Añadir Nuevo Usuario</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="NombreUsuario" class="form-label"></label>
+                                    <input asp-for="NombreUsuario" class="form-control" />
+                                    <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label"></label>
+                                    <input asp-for="Email" class="form-control" type="email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Contraseña" class="form-label"></label>
+                                    <input asp-for="Contraseña" class="form-control" type="password" />
+                                    <span asp-validation-for="Contraseña" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="FechaVencimientoDieta" class="form-label"></label>
+                                    <input asp-for="FechaVencimientoDieta" class="form-control" type="date" />
+                                    <span asp-validation-for="FechaVencimientoDieta" class="text-danger"></span>
+                                    <div class="form-text">Por defecto se establece para la próxima semana</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input asp-for="EsAdministrador" class="form-check-input" type="checkbox" />
+                                <label asp-for="EsAdministrador" class="form-check-label">
+                                    Es Administrador
+                                </label>
+                            </div>
+                            <div class="form-text">Los administradores no tienen dieta y solo pueden gestionar usuarios</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                                ← Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Crear Usuario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
