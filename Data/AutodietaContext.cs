@@ -29,6 +29,25 @@ namespace AutodietaSemanal.Data
                 .HasOne(d => d.DietaSemanal)
                 .WithMany(ds => ds.DietasDiarias)
                 .HasForeignKey(d => d.DietaSemanalId);
+
+            // Configurar relaciones con Recetas
+            modelBuilder.Entity<DietaDiaria>()
+                .HasOne(d => d.RecetaDesayuno)
+                .WithMany()
+                .HasForeignKey(d => d.RecetaDesayunoId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<DietaDiaria>()
+                .HasOne(d => d.RecetaComida)
+                .WithMany()
+                .HasForeignKey(d => d.RecetaComidaId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<DietaDiaria>()
+                .HasOne(d => d.RecetaCena)
+                .WithMany()
+                .HasForeignKey(d => d.RecetaCenaId)
+                .OnDelete(DeleteBehavior.SetNull);
                 
             // Seed data
             SeedData(modelBuilder);

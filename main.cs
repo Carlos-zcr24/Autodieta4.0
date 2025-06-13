@@ -9,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Entity Framework
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? "Server=localhost;Database=AutodietaDb;Trusted_Connection=true;TrustServerCertificate=true;";
+    
 builder.Services.AddDbContext<AutodietaContext>(options =>
-    options.UseInMemoryDatabase("AutodietaDb"));
+    options.UseSqlServer(connectionString));
 
 // Session
 builder.Services.AddDistributedMemoryCache();
