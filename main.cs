@@ -9,9 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Entity Framework
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Server=localhost;Database=AutodietaDb;Trusted_Connection=true;TrustServerCertificate=true;";
-    
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AutodietaContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -44,11 +42,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-// Seed database
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<AutodietaContext>();
-    context.Database.EnsureCreated();
-}
+// Base de datos ya creada externamente
 
 app.Run("http://0.0.0.0:5000");
