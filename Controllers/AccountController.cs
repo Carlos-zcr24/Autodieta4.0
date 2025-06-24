@@ -23,39 +23,42 @@ namespace AutodietaSemanal.Controllers
         {
             return View();
         }
-        
+
+
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            Console.WriteLine("Intentando loguear al usuario: " + model.NombreUsuario);
+            Console.WriteLine($"Model: Usuario={model.NombreUsuario}, Contraseña={model.Contraseña}");
+
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("Modelo inválido en Login");
                 return View(model);
             }
-            
+
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.NombreUsuario == model.NombreUsuario && u.Contraseña == model.Contraseña);
-            
+
             if (usuario == null)
             {
+                Console.WriteLine("Credenciales inválidas");
                 ModelState.AddModelError("", "Nombre de usuario o contraseña incorrectos");
                 return View(model);
             }
-            
-            // Configurar sesión
+
             HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
             HttpContext.Session.SetString("NombreUsuario", usuario.NombreUsuario);
             HttpContext.Session.SetString("EsAdministrador", usuario.EsAdministrador.ToString());
-            
-            if (usuario.EsAdministrador)
-            {
-                return RedirectToAction("Index", "Admin");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Usuario");
-            }
+
+            Console.WriteLine($"Inicio de sesión exitoso: {usuario.NombreUsuario} (Admin: {usuario.EsAdministrador})");
+
+            return usuario.EsAdministrador
+                ? RedirectToAction("Index", "Admin")
+                : RedirectToAction("Index", "Usuario");
         }
-        
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -67,19 +70,21 @@ namespace AutodietaSemanal.Controllers
         {
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("Modelo inválido en Register");
                 return View(model);
             }
-            
+
             // Verificar si el usuario ya existe
             var usuarioExistente = await _context.Usuarios
                 .AnyAsync(u => u.NombreUsuario == model.NombreUsuario);
-            
+
             if (usuarioExistente)
             {
+                Console.WriteLine("Usuario ya existe");
                 ModelState.AddModelError("NombreUsuario", "Este nombre de usuario ya está en uso");
                 return View(model);
             }
-            
+
             // Crear nuevo usuario
             var nuevoUsuario = new Usuario
             {
@@ -93,7 +98,9 @@ namespace AutodietaSemanal.Controllers
             
             _context.Usuarios.Add(nuevoUsuario);
             await _context.SaveChangesAsync();
-            
+            Console.WriteLine("Usuario guardado correctamente");
+
+
             // Generar dieta inicial
             await _dietaService.GenerarDietaSemanalAsync(nuevoUsuario.Id);
             
