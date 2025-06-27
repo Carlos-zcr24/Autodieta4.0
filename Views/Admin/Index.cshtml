@@ -13,9 +13,14 @@
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <h2 class="mb-0">👥 Administración de Usuarios</h2>
                     <a href="@Url.Action("Create")" class="btn btn-light">
+
                         <i class="fas fa-plus"></i> Añadir Usuario
+                        <a asp-controller="Recetas" asp-action="Index" class="btn btn-primary">
+                            Gestionar Recetas
+                        </a>
                     </a>
                 </div>
+
                 <div class="card-body">
                     @if (Model.Any())
                     {
@@ -29,6 +34,8 @@
                                         <th>Fecha Vencimiento Dieta</th>
                                         <th>Fecha Creación</th>
                                         <th>Acciones</th>
+                                        <th>Configuracion de Die</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +73,21 @@
                                                     </button>
                                                 </div>
                                             </td>
+
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                  
+                                                   
+                                                    @if (!usuario.EsAdministrador)
+                                                    {
+                                                        <a href="@Url.Action("AsignarDieta", new { id = usuario.Id })" class="btn btn-sm btn-outline-success">
+                                                            Asignar Dieta
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </td>
+
+
                                         </tr>
                                     }
                                 </tbody>

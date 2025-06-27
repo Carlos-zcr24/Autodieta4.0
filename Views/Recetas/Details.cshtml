@@ -1,0 +1,18 @@
+﻿@model AutodietaSemanal.Models.Receta
+@{
+    ViewData["Title"] = "Detalles de la Receta";
+    Layout = "_Layout";
+}
+
+<h2>Detalles de la Receta</h2>
+
+<div>
+    <h4>@Model.Nombre</h4>
+    <p><strong>Descripción:</strong> @Model.Descripcion</p>
+    <p><strong>Ingredientes:</strong> @Model.Ingredientes</p>
+    <p><strong>Tipo de comida:</strong> @Model.TipoComida</p>
+    <p><strong>Comida libre:</strong> @(Model.EsComidaLibre ? "Sí" : "No")</p>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>

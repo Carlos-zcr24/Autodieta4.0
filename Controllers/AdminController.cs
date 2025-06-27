@@ -5,6 +5,7 @@ using AutodietaSemanal.Data;
 using AutodietaSemanal.Models;
 using AutodietaSemanal.Services;
 
+
 namespace AutodietaSemanal.Controllers
 {
     public class AdminController : Controller
@@ -165,7 +166,68 @@ namespace AutodietaSemanal.Controllers
             
             return RedirectToAction("Index");
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> AsignarDieta(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null) return NotFound();
+
+            var recetas = await _context.Recetas.ToListAsync();
+
+            var modelo = new AsignarDietaViewModel
+            {
+                UsuarioId = usuario.Id,
+                NombreUsuario = usuario.NombreUsuario,
+                Recetas = recetas
+            };
+
+            return View(modelo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AsignarDieta(int UsuarioId, int[] DesayunoIds, int[] ComidaIds, int[] CenaIds)
+        {
+            // Busca la dieta semanal activa o crea una nueva
+            var dietaSemanal = await _context.DietasSemanales
+                .FirstOrDefaultAsync(ds => ds.UsuarioId == UsuarioId && ds.EsActiva);
+
+            if (dietaSemanal == null)
+            {
+                dietaSemanal = new DietaSemanal
+                {
+                    UsuarioId = UsuarioId,
+                    FechaInicio = DateTime.Today,
+                    FechaFin = DateTime.Today.AddDays(6),
+                    EsActiva = true
+                };
+                _context.DietasSemanales.Add(dietaSemanal);
+                await _context.SaveChangesAsync();
+            }
+
+            // Elimina dietas diarias anteriores de esa semana
+            var dietasDiarias = _context.DietasDiarias.Where(dd => dd.DietaSemanalId == dietaSemanal.Id);
+            _context.DietasDiarias.RemoveRange(dietasDiarias);
+            await _context.SaveChangesAsync();
+
+            // Crea las nuevas dietas diarias
+            for (int i = 0; i < 7; i++)
+            {
+                var dietaDiaria = new DietaDiaria
+                {
+                    DietaSemanalId = dietaSemanal.Id,
+                    Fecha = DateTime.Today.AddDays(i),
+                    RecetaDesayunoId = DesayunoIds.Length > i ? DesayunoIds[i] : null,
+                    RecetaComidaId = ComidaIds.Length > i ? ComidaIds[i] : null,
+                    RecetaCenaId = CenaIds.Length > i ? CenaIds[i] : null
+                };
+                _context.DietasDiarias.Add(dietaDiaria);
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
@@ -186,6 +248,8 @@ namespace AutodietaSemanal.Controllers
             
             return RedirectToAction("Index");
         }
+
+
         
         private bool UsuarioExists(int id)
         {

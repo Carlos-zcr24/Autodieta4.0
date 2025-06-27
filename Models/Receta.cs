@@ -24,7 +24,9 @@ namespace AutodietaSemanal.Models
         public bool EsComidaLibre { get; set; } = false;
         
         // Navegación
-        public virtual ICollection<DietaDiaria> DietasDiarias { get; set; } = new List<DietaDiaria>();
+        //public virtual ICollection<DietaDiaria> DietasDesayuno { get; set; }
+       // public virtual ICollection<DietaDiaria> DietasComida { get; set; }
+        //public virtual ICollection<DietaDiaria> DietasCena { get; set; }
     }
     
     public enum TipoComida

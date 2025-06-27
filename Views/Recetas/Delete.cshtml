@@ -1,0 +1,21 @@
+﻿@model AutodietaSemanal.Models.Receta
+@{
+    ViewData["Title"] = "Eliminar Receta";
+    Layout = "_Layout";
+}
+
+<h2>Eliminar Receta</h2>
+
+<h3>¿Estás seguro que deseas eliminar esta receta?</h3>
+<div>
+    <h4>@Model.Nombre</h4>
+    <p>@Model.Descripcion</p>
+    <p><strong>Tipo de comida:</strong> @Model.TipoComida</p>
+    <p><strong>Comida libre:</strong> @(Model.EsComidaLibre ? "Sí" : "No")</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
